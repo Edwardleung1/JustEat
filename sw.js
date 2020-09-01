@@ -3,7 +3,7 @@ const staticCacheName = "site-static";
 // array of asset to cache
 const assets = [
   // store request url
-  ["/"],
+  "/",
   "/index.html",
   "/js/app.js",
   "/js/ui.js",
@@ -13,6 +13,8 @@ const assets = [
   "/img/dish.png",
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://use.fontawesome.com/releases/v5.14.0/css/all.css",
+  "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
+  "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
 ];
 
 // Install service worker event (when file changes)
@@ -37,4 +39,12 @@ self.addEventListener("activate", (evt) => {
 // fetch event
 self.addEventListener("fetch", (evt) => {
   //console.log("fetch event", evt);
+  // pause fetch event and respond with our custom event
+  evt.respondWith(
+    // see if a match with request
+    caches.match(evt.request).then((cacheRes) => {
+      // return cache if we have it or the initial fetch request
+      return cacheRes || fetch(evt.request);
+    })
+  );
 });
