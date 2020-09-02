@@ -73,33 +73,33 @@ self.addEventListener("activate", (evt) => {
 self.addEventListener("fetch", (evt) => {
   //console.log("fetch event", evt);
   // pause fetch event and respond with our custom event
-  evt.respondWith(
-    // see if a match with request
-    caches
-      .match(evt.request)
-      .then((cacheRes) => {
-        // return cache if we have it or the initial fetch request
-        return (
-          cacheRes ||
-          fetch(evt.request).then((fetchRes) => {
-            // store dynamic cache
-            return caches.open(dynamicCacheName).then((cache) => {
-              // store the new response in the dynamic cache
-              cache.put(evt.request.url, fetchRes.clone());
-              // check if cache is over limit size
-              limitCacheSize(dynamicCacheName, 15);
-              return fetchRes;
-            });
-          })
-        );
-        // serve up the fallback page if the fetch fails
-      })
-      .catch(() => {
-        // searches the string .html and returns an integer position
-        if (evt.request.url.indexOf(".html") > -1) {
-          // indeed a html page we are requesting
-          return caches.match("/pages/fallback.html");
-        }
-      })
-  );
+  // evt.respondWith(
+  //   // see if a match with request
+  //   caches
+  //     .match(evt.request)
+  //     .then((cacheRes) => {
+  //       // return cache if we have it or the initial fetch request
+  //       return (
+  //         cacheRes ||
+  //         fetch(evt.request).then((fetchRes) => {
+  //           // store dynamic cache
+  //           return caches.open(dynamicCacheName).then((cache) => {
+  //             // store the new response in the dynamic cache
+  //             cache.put(evt.request.url, fetchRes.clone());
+  //             // check if cache is over limit size
+  //             limitCacheSize(dynamicCacheName, 15);
+  //             return fetchRes;
+  //           });
+  //         })
+  //       );
+  //       // serve up the fallback page if the fetch fails
+  //     })
+  //     .catch(() => {
+  //       // searches the string .html and returns an integer position
+  //       if (evt.request.url.indexOf(".html") > -1) {
+  //         // indeed a html page we are requesting
+  //         return caches.match("/pages/fallback.html");
+  //       }
+  //     })
+  // );
 });
