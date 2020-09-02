@@ -1,6 +1,6 @@
 // cache name
 const staticCacheName = "site-static-v3";
-const dynamicCacheName = "site-dynamic-v2";
+const dynamicCacheName = "site-dynamic-v3";
 
 // array of asset to cache
 const assets = [
@@ -71,6 +71,7 @@ self.addEventListener("activate", (evt) => {
 
 // fetch event
 self.addEventListener("fetch", (evt) => {
+  // only run if this request is not in the url
   if (evt.request.url.indexOf("firestore.googleapis.com") === -1) {
     // pause fetch event and respond with our custom event
     evt.respondWith(
