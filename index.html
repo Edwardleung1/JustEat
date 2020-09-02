@@ -127,8 +127,32 @@
         </div>
       </form>
     </div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDkayTq-oMMol3hh2TSAKTKV1ryQQA3RYM",
+        authDomain: "justeat-pwa.firebaseapp.com",
+        databaseURL: "https://justeat-pwa.firebaseio.com",
+        projectId: "justeat-pwa",
+        storageBucket: "justeat-pwa.appspot.com",
+        messagingSenderId: "510224097764",
+        appId: "1:510224097764:web:cab890080830618709e7f1",
+        measurementId: "G-43M0H370YJ",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      // init our database instance from the front-end
+      const db = firebase.firestore();
+    </script>
+
     <!--js file-->
     <script src="/js/app.js"></script>
+    <script src="/js/db.js"></script>
     <script src="/js/ui.js"></script>
   </body>
 </html>
