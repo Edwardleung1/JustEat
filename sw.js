@@ -17,6 +17,7 @@ const assets = [
   "https://use.fontawesome.com/releases/v5.14.0/css/all.css",
   "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
   "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+  "/pages/fallback.html",
 ];
 
 // Install service worker event (when file changes)
@@ -45,7 +46,7 @@ self.addEventListener("activate", (evt) => {
       return Promise.all(
         keys
           // take it an array of promises
-          .filter((key) => key !== staticCacheName) // if the key is not equal then goes to filter arr
+          .filter((key) => key !== staticCacheName && key !== dynamicCacheName) // if the key is not equal then goes to filter arr
           // delete the cache that is passed (old cache)
           .map((key) => caches.delete(key))
       );
@@ -59,19 +60,23 @@ self.addEventListener("fetch", (evt) => {
   // pause fetch event and respond with our custom event
   evt.respondWith(
     // see if a match with request
-    caches.match(evt.request).then((cacheRes) => {
-      // return cache if we have it or the initial fetch request
-      return (
-        cacheRes ||
-        fetch(evt.request).then((fetchRes) => {
-          // store dynamic cache
-          return caches.open(dynamicCacheName).then((cache) => {
-            // store the new response in the cache
-            cache.put(evt.request.url, fetchRes.clone());
-            return fetchRes;
-          });
-        })
-      );
-    })
+    caches
+      .match(evt.request)
+      .then((cacheRes) => {
+        // return cache if we have it or the initial fetch request
+        return (
+          cacheRes ||
+          fetch(evt.request).then((fetchRes) => {
+            // store dynamic cache
+            return caches.open(dynamicCacheName).then((cache) => {
+              // store the new response in the cache
+              cache.put(evt.request.url, fetchRes.clone());
+              return fetchRes;
+            });
+          })
+        );
+        // serve up the fallback page if the fetch fails
+      })
+      .catch(() => caches.match("/pages/fallback.html"))
   );
 });
