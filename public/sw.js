@@ -1,6 +1,6 @@
 // cache name
-const staticCacheName = "site-static-v6";
-const dynamicCacheName = "site-dynamic-v9";
+const staticCacheName = "site-static-v7";
+const dynamicCacheName = "site-dynamic-v10";
 
 // array of asset to cache
 const assets = [
